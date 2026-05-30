@@ -413,10 +413,13 @@ nav {
 /* ===== PRICING ===== */
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   margin-top: 56px;
   align-items: stretch;
+}
+@media (max-width: 640px) {
+  .pricing-grid { grid-template-columns: 1fr; }
 }
 .price-card {
   border: 1px solid var(--border);
@@ -445,9 +448,18 @@ nav {
   font-size: 44px;
   font-weight: 600;
   letter-spacing: -1.5px;
-  line-height: 1;
+  line-height: 1.05;
+  min-height: 46px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
 }
-.price-unit { font-size: 16px; font-weight: 400; }
+.price-num.text {
+  font-size: 30px;
+  letter-spacing: -.3px;
+  align-items: center;
+}
+.price-unit { font-size: 16px; font-weight: 400; margin-left: 2px; }
 .price-desc {
   font-size: 14px;
   color: var(--text-muted);
@@ -481,6 +493,87 @@ nav {
   font-weight: 500;
 }
 .price-card.featured .check { background: var(--purple); }
+
+/* ===== TUTORING ===== */
+.tutoring-section { background: var(--purple-light); }
+.tutoring-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(40px, 6vw, 72px);
+  align-items: center;
+}
+.tutoring-content .section-title { margin-top: 4px; }
+.tutoring-desc {
+  margin-top: 24px;
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 480px;
+}
+.tutoring-perks {
+  list-style: none;
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 20px;
+  max-width: 480px;
+}
+.tutoring-perks li {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+}
+.tutoring-price-card {
+  background: var(--text);
+  color: var(--white);
+  border-radius: 24px;
+  padding: 48px 40px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(83,74,183,0.12);
+}
+.tutoring-price-card .price-label {
+  color: rgba(245,242,238,0.5);
+  margin-bottom: 14px;
+}
+.tutoring-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: -2px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: baseline;
+}
+.tutoring-price .price-unit {
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(245,242,238,0.55);
+  margin-left: 4px;
+}
+.tutoring-price-desc {
+  font-size: 14px;
+  color: rgba(245,242,238,0.65);
+  margin: 18px 0 28px;
+  line-height: 1.6;
+}
+.tutoring-price-card .btn-primary {
+  background: var(--white);
+  color: var(--text) !important;
+}
+.tutoring-price-card .btn-primary:hover {
+  background: var(--purple);
+  color: var(--white) !important;
+  box-shadow: 0 10px 24px rgba(83,74,183,0.4);
+}
+
+@media (max-width: 768px) {
+  .tutoring-inner { grid-template-columns: 1fr; gap: 40px; }
+  .tutoring-perks { grid-template-columns: 1fr; max-width: none; }
+  .tutoring-price-card { padding: 36px 28px; }
+  .tutoring-price { font-size: 52px; }
+}
 
 /* ===== FAQ ===== */
 .faq-section { background: var(--cream); }
@@ -598,6 +691,7 @@ footer a:hover { color: var(--text); }
     <a href="#how">服務流程</a>
     <a href="#bartenders">調酒師</a>
     <a href="#pricing">收費</a>
+    <a href="#tutoring">家教</a>
     <a href="#faq">常見問題</a>
     <a href="https://docs.google.com/forms/d/1vgNSUBKDCVEzarxXT2ssC7Zu1NKC98_5A5E573F1bps/viewform" target="_blank" rel="noopener">調酒師加入</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSegyo8-aka9oAgm1kv8j4mlN4wtpSpVw0tXicdV00M6hux18w/viewform" target="_blank" rel="noopener" class="nav-cta">立即預約</a>
@@ -680,6 +774,7 @@ footer a:hover { color: var(--text); }
             <span class="card-tag">派對專屬</span>
           </div>
           <div class="card-license">
+            <div class="license-row">📜 英國City & Guild國際調酒師證照</div>
             <div class="license-row">🏆 2025 Bols Taiwan Champion</div>
             <div class="license-row">🏆 2024 Bobby's Gin Taiwan Champion</div>
             <div class="license-row">🥈 2023 The Bartender Society Global</div>
@@ -702,18 +797,18 @@ footer a:hover { color: var(--text); }
   <div class="pricing-grid">
     <div class="price-card">
       <div class="price-label">出席費</div>
-      <div class="price-num">NT$500+<span class="price-unit"> / hr </span></div>
+      <div class="price-num">NT$500+<span class="price-unit">/ hr</span></div>
       <div class="price-desc">調酒師的專業技術勞務費，依地點、服務時長和需求分別計算，確認需求後，會Email報價給您。</div>
       <ul class="price-items">
-        <li><span class="check">✓</span>全套調酒器材攜帶</li>
+        <li><span class="check">✓</span>攜帶全套調酒器材</li>
         <li><span class="check">✓</span>到府服務，大台北地區</li>
         <li><span class="check">✓</span>客製化調酒菜單</li>
       </ul>
     </div>
     <div class="price-card featured">
-      <div class="price-label">酒材費用</div>
-      <div class="price-num">自備</div>
-      <div class="price-desc">酒類飲品由您自行準備，調酒師可提供採購建議清單或陪同採購，其他非酒類飲品由調酒師提供。</div>
+      <div class="price-label">酒水費用</div>
+      <div class="price-num text">自備</div>
+      <div class="price-desc">酒類飲品由您自行準備，調酒師可提供採購建議清單或陪同採購。</div>
       <ul class="price-items">
         <li><span class="check">✓</span>提供建議採購清單</li>
         <li><span class="check">✓</span>可陪同前往採購</li>
@@ -721,14 +816,49 @@ footer a:hover { color: var(--text); }
       </ul>
     </div>
     <div class="price-card">
+      <div class="price-label">酒材費用</div>
+      <div class="price-num text">自備/線上討論</div>
+      <div class="price-desc">酒材(如:軟飲、調味品等)可由調酒師準備或自行提供。</div>
+      <ul class="price-items">
+        <li><span class="check">✓</span>完整副材料清單規劃</li>
+        <li><span class="check">✓</span>線上諮詢免出門備料</li>
+        <li><span class="check">✓</span>豐富配料提升派對質感</li>
+      </ul>
+    </div>
+    <div class="price-card featured">
       <div class="price-label">付款方式</div>
-      <div class="price-num" style="font-size:32px">現金結清</div>
+      <div class="price-num text">現金結清</div>
       <div class="price-desc">服務完成後現場以現金支付，安全簡便，無需預付。</div>
       <ul class="price-items">
         <li><span class="check">✓</span>服務後付款，零風險</li>
         <li><span class="check">✓</span>24 小時前取消免費</li>
         <li><span class="check">✓</span>未來支援線上付款</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section-full tutoring-section" id="tutoring">
+  <div class="section-inner tutoring-inner">
+    <div class="tutoring-content">
+      <div class="section-tag">調酒家教</div>
+      <h2 class="section-title">不只調給你喝，<em>還能教你調</em></h2>
+      <p class="tutoring-desc">由 SiPro 專業調酒師親自指導，從工具認識、基酒分類、經典雞尾酒到創意特調，依你的程度量身規劃課程內容。</p>
+      <ul class="tutoring-perks">
+        <li><span class="check">✓</span>一對一 / 小班教學</li>
+        <li><span class="check">✓</span>客製化課程內容</li>
+        <li><span class="check">✓</span>提供全套教學器材</li>
+        <li><span class="check">✓</span>大台北地區可到府</li>
+      </ul>
+    </div>
+    <div class="tutoring-price-card">
+      <div class="price-label">家教時薪</div>
+      <div class="tutoring-price">NT$1,000<span class="price-unit">/ hr</span></div>
+      <p class="tutoring-price-desc">含教學費與器材使用<br>酒材與酒水另計，可代為採購</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdfXEBHbp7bGjyPKozMUAg0jkqVbPVur_ItKC5VEpDkzNxrMA/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary">
+        預約家教
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
   </div>
 </section>
