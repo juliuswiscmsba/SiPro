@@ -94,7 +94,20 @@ nav {
   padding: 140px 48px 80px;
   position: relative;
   overflow: hidden;
+  background-image: url('img/sipro_hero_illustration.png');
+  background-color: #1a1a2e;
+  background-size: cover;
+  background-position: center;
 }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(14,14,14,0.62);
+  z-index: 0;
+}
+.hero > * { position: relative; z-index: 1; }
+.hero-content { display: flex; flex-direction: column; }
 
 .hero-bg-text {
   position: absolute;
@@ -134,6 +147,7 @@ nav {
   line-height: 1.05;
   letter-spacing: -2px;
   max-width: 780px;
+  color: #f5f2ee;
   opacity: 0;
   animation: fadeUp .7s .2s forwards;
 }
@@ -146,7 +160,7 @@ nav {
 .hero-sub {
   margin-top: 28px;
   font-size: 18px;
-  color: var(--text-muted);
+  color: rgba(245,242,238,0.75);
   font-weight: 300;
   max-width: 480px;
   line-height: 1.7;
@@ -196,7 +210,7 @@ nav {
   gap: 48px;
   margin-top: 80px;
   padding-top: 40px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(245,242,238,0.2);
   opacity: 0;
   animation: fadeUp .7s .65s forwards;
 }
@@ -206,8 +220,9 @@ nav {
   font-weight: 600;
   line-height: 1;
   letter-spacing: -1px;
+  color: #f5f2ee;
 }
-.stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.stat-label { font-size: 13px; color: rgba(245,242,238,0.65); margin-top: 4px; }
 
 /* HOW IT WORKS */
 .section {
@@ -532,20 +547,33 @@ footer a:hover { color: var(--black); }
 
 /* MOBILE */
 @media (max-width: 768px) {
-  nav { padding: 16px 20px; }
-  .nav-links { display: none; }
-  .hero { padding: 120px 20px 60px; }
-  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  nav { padding: 14px 20px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-links { gap: 0; }
+  .nav-cta { padding: 8px 18px; font-size: 13px; }
+  .hero { padding: 110px 20px 60px; min-height: 92vh; }
+  .hero h1 { font-size: clamp(40px, 11vw, 64px); }
+  .hero-bg-text { font-size: 140px; opacity: 0.6; }
+  .hero-actions { flex-wrap: wrap; gap: 12px; }
+  .btn-primary { padding: 14px 28px; font-size: 14px; }
+  .hero-stats { gap: 32px; flex-wrap: wrap; margin-top: 56px; padding-top: 28px; }
+  .stat-num { font-size: 32px; }
   .section { padding: 60px 20px; }
+  .section-title { font-size: clamp(30px, 7vw, 44px); }
   .steps { grid-template-columns: 1fr; }
+  .step { padding: 32px 28px; }
+  .step-num { font-size: 56px; }
   .bartenders-section { padding: 60px 20px; }
-  .bartenders-grid { grid-template-columns: 1fr; }
+  .bartenders-grid { grid-template-columns: 1fr !important; }
+  .bartender-card { grid-template-columns: 1fr !important; display: block !important; }
+  .card-avatar { height: 280px !important; min-height: 280px !important; }
   .pricing-section { padding: 60px 20px; }
   .pricing-grid { grid-template-columns: 1fr; }
   .faq-section { padding: 60px 20px; }
   .faq-grid { grid-template-columns: 1fr; }
   .cta-section { padding: 80px 20px; }
-  footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+  .cta-buttons { flex-direction: column; gap: 16px; }
+  footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; font-size: 12px; }
 }
 </style>
 </head>
@@ -590,7 +618,7 @@ footer a:hover { color: var(--black); }
       <div class="stat-label">確認回覆時間</div>
     </div>
   </div>
-</section>
+  </section>
 
 <!-- HOW IT WORKS -->
 <section class="section" id="how">
@@ -622,7 +650,10 @@ footer a:hover { color: var(--black); }
   <div class="bartenders-grid" style="grid-template-columns: minmax(0, 480px); justify-content: center;">
 
     <div class="bartender-card reveal" style="display: grid; grid-template-columns: 220px 1fr;">
-      <div class="card-avatar purple" style="height: 100%; min-height: 220px; font-size: 56px;">周</div>
+      <div class="card-avatar purple" id="avatar-elis" style="height: 100%; min-height: 220px; padding: 0; overflow: hidden; position: relative;">
+        <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;">周</span>
+        <img src="img/elis.jpg" alt="周新翔 Elis" style="position:relative;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+      </div>
       <div class="card-body">
         <div class="card-verified">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -702,7 +733,7 @@ footer a:hover { color: var(--black); }
   <div class="faq-grid">
     <div class="faq-item reveal">
       <div class="faq-q">需要提前多久預約？</div>
-      <div class="faq-a">建議活動前 7 天預約，讓調酒師有足夠時間規劃菜單與採購。急單請直接 Email 聯繫我們，視調酒師狀況安排。</div>
+      <div class="faq-a">建議活動前 3 天預約，讓調酒師有足夠時間規劃菜單與採購。急單請直接 Line 聯繫我們，視調酒師狀況安排。</div>
     </div>
     <div class="faq-item reveal">
       <div class="faq-q">器材需要我自己準備嗎？</div>
