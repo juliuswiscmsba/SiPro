@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SiPro · Sip Like a Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0e0e0e;
+  --white: #f5f2ee;
+  --cream: #ede9e3;
+  --purple: #534AB7;
+  --purple-light: #EEEDFE;
+  --green: #1D9E75;
+  --gold: #BA7517;
+  --text-muted: #888480;
+  --border: rgba(14,14,14,0.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(245,242,238,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  color: var(--black);
+}
+.nav-logo span { color: var(--purple); }
+.nav-logo sup {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--black); }
+
+.nav-cta {
+  background: var(--black) !important;
+  color: var(--white) !important;
+  padding: 10px 24px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.nav-cta:hover { background: var(--purple) !important; transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 140px 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(120px, 22vw, 280px);
+  font-weight: 600;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(83,74,183,0.07);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -4px;
+}
+
+.hero-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--purple);
+  background: var(--purple-light);
+  padding: 6px 14px;
+  border-radius: 40px;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp .6s .1s forwards;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  max-width: 780px;
+  opacity: 0;
+  animation: fadeUp .7s .2s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--purple);
+}
+
+.hero-sub {
+  margin-top: 28px;
+  font-size: 18px;
+  color: var(--text-muted);
+  font-weight: 300;
+  max-width: 480px;
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp .7s .35s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 48px;
+  opacity: 0;
+  animation: fadeUp .7s .5s forwards;
+}
+
+.btn-primary {
+  background: var(--black);
+  color: var(--white);
+  padding: 16px 36px;
+  border-radius: 40px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover { background: var(--purple); transform: translateY(-2px); }
+.btn-primary svg { transition: transform .2s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+
+.btn-ghost {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s;
+}
+.btn-ghost:hover { color: var(--black); }
+
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp .7s .65s forwards;
+}
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+/* HOW IT WORKS */
+.section {
+  padding: 100px 48px;
+}
+
+.section-tag {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  max-width: 600px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 60px;
+  border: 1px solid var(--border);
+}
+
+.step {
+  background: var(--white);
+  padding: 40px 36px;
+  position: relative;
+}
+
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px;
+  font-weight: 600;
+  color: var(--purple-light);
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: -3px;
+}
+
+.step h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.step p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* BARTENDERS */
+.bartenders-section {
+  padding: 100px 48px;
+  background: var(--cream);
+}
+
+.bartenders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.bartender-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform .25s;
+}
+.bartender-card:hover { transform: translateY(-4px); }
+
+.card-avatar {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 600;
+}
+.card-avatar.purple { background: var(--purple-light); color: var(--purple); }
+.card-avatar.green { background: #E1F5EE; color: var(--green); }
+.card-avatar.gold { background: #FAEEDA; color: var(--gold); }
+
+.card-body { padding: 24px; }
+
+.card-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--green);
+  background: #E1F5EE;
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-bottom: 14px;
+}
+
+.card-name { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.card-role { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.card-tag {
+  font-size: 12px;
+  background: var(--cream);
+  color: var(--text-muted);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.card-license {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.license-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.license-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+/* PRICING */
+.pricing-section { padding: 100px 48px; }
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 60px;
+  align-items: start;
+}
+
+.price-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 32px;
+}
+.price-card.featured {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.price-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.price-card.featured .price-label { color: rgba(245,242,238,0.5); }
+
+.price-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+.price-unit { font-size: 16px; font-weight: 400; }
+
+.price-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+.price-card.featured .price-desc { color: rgba(245,242,238,0.6); }
+
+.price-items {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+.price-items li {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+}
+.price-card.featured .price-items li { color: rgba(245,242,238,0.7); }
+.check {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--green);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+}
+.price-card.featured .check { background: var(--purple); }
+
+/* FAQ */
+.faq-section {
+  padding: 100px 48px;
+  background: var(--cream);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.faq-item {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 28px 28px;
+}
+
+.faq-q {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.faq-a {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* CTA FOOTER */
+.cta-section {
+  padding: 120px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: var(--purple-light);
+  opacity: .4;
+  pointer-events: none;
+}
+
+.cta-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 600;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  position: relative;
+}
+.cta-section h2 em { font-style: italic; color: var(--purple); }
+
+.cta-section p {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-top: 20px;
+  position: relative;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 44px;
+  position: relative;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+footer a { color: var(--text-muted); text-decoration: none; }
+footer a:hover { color: var(--black); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .6s, transform .6s;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 120px 20px 60px; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  .section { padding: 60px 20px; }
+  .steps { grid-template-columns: 1fr; }
+  .bartenders-section { padding: 60px 20px; }
+  .bartenders-grid { grid-template-columns: 1fr; }
+  .pricing-section { padding: 60px 20px; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .faq-section { padding: 60px 20px; }
+  .faq-grid { grid-template-columns: 1fr; }
+  .cta-section { padding: 80px 20px; }
+  footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Si<span>Pro</span><sup></sup></a>
+  <div class="nav-links">
+    <a href="#how">服務流程</a>
+    <a href="#bartenders">調酒師</a>
+    <a href="#pricing">收費</a>
+    <a href="#faq">常見問題</a>
+    <a href="https://docs.google.com/forms/d/1vgNSUBKDCVEzarxXT2ssC7Zu1NKC98_5A5E573F1bps/viewform" target="_blank">調酒師加入</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSegyo8-aka9oAgm1kv8j4mlN4wtpSpVw0tXicdV00M6hux18w/viewform" target="_blank" class="nav-cta">立即預約</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">SiPro</div>
+  <div class="hero-tag">台灣首選到府調酒服務</div>
+  <h1>把<em>吧台</em><br>搬回你家</h1>
+  <p class="hero-sub">專業調酒師上門服務，適合生日派對、朋友聚會、求婚等私人場合。酒自備，技術交給我們。</p>
+  <div class="hero-actions">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSegyo8-aka9oAgm1kv8j4mlN4wtpSpVw0tXicdV00M6hux18w/viewform" target="_blank" class="btn-primary">
+      立即預約
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#bartenders" class="btn-ghost">
+      認識調酒師
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">500<span style="font-size:28px">+</span></div>
+      <div class="stat-label">出席費 / 小時起</div>
+    </div>
+    <div>
+      <div class="stat-num">24<span style="font-size:28px">hr</span></div>
+      <div class="stat-label">確認回覆時間</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-tag">服務流程</div>
+  <h2 class="section-title reveal">三個步驟，派對就緒</h2>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>填寫預約表單</h3>
+      <p>告訴我們你的活動日期、人數、地點與偏好的調酒風格，3 分鐘填完。</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>確認媒合</h3>
+      <p>我們在 24 小時內以 Line 或 Email 聯繫你，確認調酒師人選與細節。</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>調酒師到府服務</h3>
+      <p>調酒師帶齊全套器材準時到你家，你只需要備好酒，盡情享受。</p>
+    </div>
+  </div>
+</section>
+
+<!-- BARTENDERS -->
+<section class="bartenders-section" id="bartenders">
+  <div class="section-tag">認識我們的調酒師</div>
+  <h2 class="section-title reveal">每一位都<em style="font-style:italic;color:var(--purple)">經過審核</em></h2>
+  <div class="bartenders-grid" style="grid-template-columns: minmax(0, 480px); justify-content: center;">
+
+    <div class="bartender-card reveal" style="display: grid; grid-template-columns: 220px 1fr;">
+      <div class="card-avatar purple" style="height: 100%; min-height: 220px; font-size: 56px;">周</div>
+      <div class="card-body">
+        <div class="card-verified">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          已驗證
+        </div>
+        <div class="card-name">周新翔 Elis</div>
+        <div class="card-role">Silk & Linen · 5 年以上經驗</div>
+        <div class="card-tags" style="margin-bottom: 14px;">
+          <span class="card-tag">創意特調</span>
+          <span class="card-tag">經典雞尾酒</span>
+          <span class="card-tag">Gin 琴酒</span>
+          <span class="card-tag">派對專屬</span>
+        </div>
+        <div class="card-license">
+          <div class="license-row"><span class="license-dot"></span>🏆 2025 Bols Taiwan Champion</div>
+          <div class="license-row"><span class="license-dot"></span>🏆 2024 Bobby's Gin Taiwan Champion</div>
+          <div class="license-row"><span class="license-dot"></span>🥈 2023 The Bartender Society Global</div>
+          <div class="license-row"><span class="license-dot"></span>🏆 2022 Flor de Caña Taiwan Champion</div>
+          <div class="license-row"><span class="license-dot"></span>🏆 2020 Twinings Taiwan Champion</div>
+        </div>
+        <a href="https://www.instagram.com/elis_chou/" target="_blank" style="display:inline-flex;align-items:center;gap:5px;margin-top:14px;font-size:12px;color:var(--purple);text-decoration:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @elis_chou
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-tag">收費說明</div>
+  <h2 class="section-title reveal">透明、簡單、<br>沒有隱藏費用</h2>
+  <div class="pricing-grid">
+
+    <div class="price-card reveal">
+      <div class="price-label">出席費</div>
+      <div class="price-num">NT$500<span class="price-unit"> / hr</span></div>
+      <div class="price-desc">調酒師的專業技術勞務費，依服務時長計算。</div>
+      <ul class="price-items">
+        <li><span class="check">✓</span>全套調酒器材攜帶</li>
+        <li><span class="check">✓</span>到府服務，大台北地區</li>
+        <li><span class="check">✓</span>客製化調酒菜單</li>
+      </ul>
+    </div>
+
+    <div class="price-card featured reveal">
+      <div class="price-label">酒材費用</div>
+      <div class="price-num" style="color:var(--white)">自備</div>
+      <div class="price-desc">酒類飲品由您自行準備，調酒師可提供採購建議清單或陪同採購。</div>
+      <ul class="price-items">
+        <li><span class="check">✓</span>提供建議採購清單</li>
+        <li><span class="check">✓</span>可陪同前往採購</li>
+        <li><span class="check">✓</span>依派對風格量身推薦</li>
+      </ul>
+    </div>
+
+    <div class="price-card reveal">
+      <div class="price-label">付款方式</div>
+      <div class="price-num" style="font-size:36px">現金結清</div>
+      <div class="price-desc">服務完成後現場以現金支付，安全簡便，無需預付。</div>
+      <ul class="price-items">
+        <li><span class="check">✓</span>服務後付款，零風險</li>
+        <li><span class="check">✓</span>24 小時前取消免費</li>
+        <li><span class="check">✓</span>未來支援線上付款</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="section-tag">常見問題</div>
+  <h2 class="section-title reveal">你可能想知道的事</h2>
+  <div class="faq-grid">
+    <div class="faq-item reveal">
+      <div class="faq-q">需要提前多久預約？</div>
+      <div class="faq-a">建議活動前 3 天預約，讓調酒師有足夠時間規劃菜單與採購。急單請直接 Line 聯繫我們，視調酒師狀況安排。</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">器材需要我自己準備嗎？</div>
+      <div class="faq-a">不需要。調酒師會攜帶全套專業器材，包含搖酒器、量杯、冰桶、濾網等，你只需要提供基本的桌面空間。</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">酒要去哪裡買、買什麼？</div>
+      <div class="faq-a">調酒師在確認預約後會提供專屬採購清單，你可以自行前往超市或酒專購買，也可以選擇讓調酒師陪同採購。</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">如果需要取消怎麼辦？</div>
+      <div class="faq-a">活動開始前 24 小時取消完全免費，不收任何費用。請盡早通知我們以便調酒師重新安排行程，謝謝。</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">服務範圍在哪裡？</div>
+      <div class="faq-a">目前服務台北市、新北市為主，桃園市視距離洽談。歡迎填表詢問，我們會盡力安排。</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">調酒師的資格如何確認？</div>
+      <div class="faq-a">所有 SiPro 調酒師均需提交真實證照，由我們人工審核後才能接案。網頁上的每位調酒師都附有證照資訊可供查閱。</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="reveal">準備好了嗎？<br><em>讓派對升級</em></h2>
+  <p class="reveal">填寫預約表單，24 小時內我們會與您確認細節。</p>
+  <div class="cta-buttons reveal">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSegyo8-aka9oAgm1kv8j4mlN4wtpSpVw0tXicdV00M6hux18w/viewform" target="_blank" class="btn-primary">
+      立即預約
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="https://docs.google.com/forms/d/1vgNSUBKDCVEzarxXT2ssC7Zu1NKC98_5A5E573F1bps/viewform" target="_blank" class="btn-ghost">你是調酒師？加入 SiPro →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Si<strong>Pro</strong> · Sip Like a Pro</span>
+  <span>聯絡我們：<a href="mailto:hello@sipro.tw">hello@sipro.tw</a> &nbsp;|&nbsp; Line ID：<a href="#">@sipro</a></span>
+  <span>© 2026 SiPro. 台北</span>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
