@@ -405,11 +405,8 @@ nav {
 .scenario-card:hover .scenario-card-inner::after { opacity: 1; }
 .scenario-card-inner > * { color: var(--text); }
 
-/* 雙照片 banner */
+/* 單張大照片 banner — 突顯作品細節 */
 .scenario-photos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
   background: var(--cream);
   overflow: hidden;
   position: relative;
@@ -417,21 +414,21 @@ nav {
 .scenario-photos img {
   width: 100%;
   height: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   display: block;
-  transition: transform .6s cubic-bezier(.2,.7,.3,1);
+  transition: transform .8s cubic-bezier(.2,.7,.3,1);
 }
 .scenario-card:hover .scenario-photos img {
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
-/* 兩張照片的微妙錯落感：第二張稍微偏色調融合 */
+/* 底部細微漸層讓照片與下方文字過渡更自然 */
 .scenario-photos::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 70%, rgba(14,14,14,0.04) 100%);
+  background: linear-gradient(180deg, transparent 75%, rgba(14,14,14,0.06) 100%);
 }
 
 .scenario-label {
@@ -526,7 +523,7 @@ nav {
   .scenarios-grid { grid-template-columns: 1fr; gap: 16px; }
   .scenario-card-inner { padding: 28px 28px 32px; }
   .scenario-title { font-size: 26px; }
-  .scenario-photos img { aspect-ratio: 5 / 3; }
+  .scenario-photos img { aspect-ratio: 3 / 2; }
 }
 
 /* ===== BARTENDERS ===== */
@@ -543,6 +540,9 @@ nav {
   overflow: hidden;
   display: grid;
   grid-template-columns: 280px 1fr;
+  grid-template-areas:
+    "avatar body"
+    "works  works";
   border: 1px solid var(--border);
   transition: transform .25s, box-shadow .25s;
 }
@@ -550,6 +550,9 @@ nav {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(14,14,14,0.08);
 }
+.card-avatar { grid-area: avatar; }
+.card-body { grid-area: body; }
+.card-works { grid-area: works; }
 .card-avatar {
   height: 100%;
   min-height: 320px;
@@ -639,10 +642,99 @@ nav {
 }
 .card-ig:hover { color: var(--text); }
 
+/* ── 招牌作品下層 ── */
+.card-works {
+  background: linear-gradient(180deg, var(--cream) 0%, #e6e1d9 100%);
+  padding: 26px 32px 30px;
+  border-top: 1px solid rgba(14,14,14,0.06);
+}
+.card-works-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+.card-works-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(14,14,14,0.15), transparent);
+}
+.card-works-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.card-work-item {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--white);
+  cursor: pointer;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(14,14,14,0.04);
+  transition: box-shadow .3s, transform .3s;
+}
+.card-work-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(14,14,14,0.12);
+}
+.card-work-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s cubic-bezier(.2,.7,.3,1);
+}
+.card-work-item:hover img { transform: scale(1.06); }
+
+.card-work-item figcaption {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -.2px;
+  color: var(--white);
+  background: rgba(14,14,14,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px 12px;
+  border-radius: 30px;
+  transform: translateY(4px);
+  opacity: 0;
+  transition: transform .35s, opacity .35s;
+}
+.card-work-item:hover figcaption {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 @media (max-width: 640px) {
-  .bartender-card { grid-template-columns: 1fr; }
+  .bartender-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "avatar"
+      "body"
+      "works";
+  }
   .card-avatar { min-height: 320px; }
   .card-body { padding: 24px; }
+  .card-works { padding: 22px 20px 24px; }
+  .card-works-grid { gap: 8px; }
+  /* 手機上 caption 預設顯示，因為沒 hover */
+  .card-work-item figcaption {
+    transform: translateY(0);
+    opacity: 1;
+    font-size: 12px;
+    padding: 3px 10px;
+  }
 }
 
 /* ===== FLOW / 預約流程 ===== */
@@ -785,33 +877,52 @@ nav {
 @media (max-width: 640px) {
   .flow-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 32px;
     margin-top: 40px;
-    max-width: 380px;
+    max-width: 420px;
     margin-left: auto;
     margin-right: auto;
   }
   .flow-node {
     display: grid;
     grid-template-columns: 56px 1fr;
-    gap: 18px;
+    grid-template-areas:
+      "circle title"
+      "circle desc";
+    column-gap: 18px;
+    row-gap: 6px;
     text-align: left;
     align-items: start;
     padding: 0;
   }
+  .flow-circle {
+    grid-area: circle;
+    margin-bottom: 0;
+    align-self: start;
+  }
+  .flow-title {
+    grid-area: title;
+    align-self: center;
+    margin: 0;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+  }
+  .flow-desc {
+    grid-area: desc;
+    padding: 0;
+    margin-top: -4px;
+  }
   .flow-node:not(:last-child)::after {
     top: 56px;
-    left: 27px; /* 圓圈中心 */
+    left: 27px; /* 圓圈水平中心 */
     right: auto;
-    bottom: -28px;
+    bottom: -32px;
     border-top: none;
     border-left: 2px dashed var(--purple-soft);
     width: 0;
-    height: calc(100% - 28px);
+    height: calc(100% - 24px);
   }
-  .flow-circle { margin-bottom: 0; }
-  .flow-title { margin-top: 14px; margin-bottom: 6px; }
-  .flow-desc { padding: 0; }
   .flow-node:nth-last-child(2)::after {
     border-image: linear-gradient(to bottom, var(--purple-soft), var(--gold-light)) 1;
   }
@@ -1417,26 +1528,25 @@ footer a:hover { color: var(--text); }
 <section class="section-full scenarios-section" id="scenarios">
   <div class="section-inner">
     <div class="section-tag">適合什麼場合</div>
-    <h2 class="section-title">不是又一場聚餐，<em>是被記住的那一晚</em></h2>
-    <p class="scenarios-intro">朋友揪了三次火鍋之後，下一次該換你出招。情人節訂不到的餐廳，其實你家最舒服。</p>
+    <h2 class="section-title">家，就是今晚的<em>主場</em></h2>
+    <p class="scenarios-intro">下一次聚會，換你出招。最舒服的紀念日，永遠在你家。</p>
 
     <div class="scenarios-grid">
 
       <!-- 卡片 1：朋友聚會 -->
       <article class="scenario-card scenario-friends">
         <div class="scenario-photos">
-          <img src="img/work-02.jpg" alt="Bacardi 蘭姆高球，朋友聚會推薦" loading="lazy">
-          <img src="img/work-04.jpg" alt="茶調無酒精，照顧不喝酒的朋友" loading="lazy">
+          <img src="img/work-02.jpg" alt="Bacardi 蘭姆高球，朋友聚會招牌款" loading="lazy">
         </div>
         <div class="scenario-card-inner">
           <div class="scenario-label">朋友聚會 · 生日派對</div>
-          <h3 class="scenario-title">別再揪<em>火鍋</em>了</h3>
+          <h3 class="scenario-title">給朋友一個<em>還想再來</em>的夜晚</h3>
           <p class="scenario-desc">4–12 人的揪聚，調酒師站在你家吧台，從歡迎酒、互動 shot、到客製化生日特調一路接住。比酒吧自在，比自己辦輕鬆。</p>
 
           <ul class="scenario-list">
             <li><span class="scenario-bullet">·</span>朋友走進門的那 3 秒，值回票價</li>
-            <li><span class="scenario-bullet">·</span>不用搶位、不用排隊、不用管 Uber</li>
-            <li><span class="scenario-bullet">·</span>不喝酒的朋友也照顧到，現場茶調無酒精</li>
+            <li><span class="scenario-bullet">·</span>自家空間、自家節奏、喝到末班車後也沒差</li>
+            <li><span class="scenario-bullet">·</span>現場茶調無酒精，照顧到每一位朋友</li>
           </ul>
 
           <div class="scenario-meta">
@@ -1450,17 +1560,16 @@ footer a:hover { color: var(--text); }
       <!-- 卡片 2：情侶紀念日 -->
       <article class="scenario-card scenario-couple">
         <div class="scenario-photos">
-          <img src="img/work-03.jpg" alt="皇冠特調，紀念日驚喜時刻" loading="lazy">
-          <img src="img/work-01.jpg" alt="西瓜粉紅特調，浪漫對飲" loading="lazy">
+          <img src="img/work-03.jpg" alt="The Crown 皇冠特調，紀念日儀式款" loading="lazy">
         </div>
         <div class="scenario-card-inner">
           <div class="scenario-label">紀念日 · 求婚 · 兩人之夜</div>
-          <h3 class="scenario-title">不用<em>訂位</em>的那家餐廳</h3>
-          <p class="scenario-desc">紀念日訂不到的店、求婚怕在外面尷尬、生日想給驚喜——讓家變成兩人的私人 bar。客製化兩杯酒，配上你說好的那首歌。</p>
+          <h3 class="scenario-title">把家變成兩人的<em>私人 bar</em></h3>
+          <p class="scenario-desc">紀念日、求婚、生日想給驚喜——讓家變成只屬於你們的酒吧。客製化兩杯酒，配上你說好的那首歌，給對方一個完整的夜晚。</p>
 
           <ul class="scenario-list">
             <li><span class="scenario-bullet">·</span>客製酒款命名，藏進你們的故事</li>
-            <li><span class="scenario-bullet">·</span>無人打擾的私密空間，慢慢喝</li>
+            <li><span class="scenario-bullet">·</span>私密空間裡，慢慢喝、慢慢聊</li>
             <li><span class="scenario-bullet">·</span>求婚款戲劇感裝飾，把驚喜留給對方</li>
           </ul>
 
@@ -1515,6 +1624,23 @@ footer a:hover { color: var(--text); }
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             @elis_chou
           </a>
+        </div>
+        <div class="card-works">
+          <div class="card-works-label">
+            <span class="card-works-line"></span>
+            <span>招牌作品 · Signature</span>
+            <span class="card-works-line"></span>
+          </div>
+          <div class="card-works-grid">
+            <figure class="card-work-item">
+              <img src="img/work-01.jpg" alt="Watermelon Rosé 西瓜粉紅特調" loading="lazy">
+              <figcaption>Watermelon Rosé</figcaption>
+            </figure>
+            <figure class="card-work-item">
+              <img src="img/work-04.jpg" alt="Tea Pairing 茶調無酒精" loading="lazy">
+              <figcaption>Tea Pairing</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </div>
